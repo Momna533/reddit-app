@@ -1,0 +1,10 @@
+export const SET_POSTS = "SET_POSTS";
+export const SET_SEARCH = "SET_SEARCH";
+export const FILTER_POSTS = "FILTER_POSTS";
+export const SET_SELECTED_SUBREDDIT = "SET_SELECTED_SUBREDDIT";
+export const ON_CHANGE = "ON_CHANGE";
+export const LOADING_FALSE = "LOADING_FALSE";
+export const LOADING_TRUE = "LOADING_TRUE";
+export const ERROR_FALSE = "ERROR_FALSE";
+export const ERROR_TRUE = "ERROR_TRUE";
+export const SET_SUBREDDITS = "SET_SUBREDDITS";
