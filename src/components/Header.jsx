@@ -1,25 +1,33 @@
-import { FaReddit } from "react-icons/fa";
+import { FaReddit, FaSearch } from "react-icons/fa";
 import { connect } from "react-redux";
 import {
+  FILTER_POSTS,
   SET_SEARCH,
-  LOADING_TRUE,
-  ERROR_FALSE,
-  LOADING_FALSE,
+  SET_POSTS,
   ERROR_TRUE,
+  LOADING_FALSE,
 } from "../redux/ReduxActions";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 
 const Header = ({ search, dispatch }) => {
-  const searchRef = useRef();
+  const handleSearch = (e) => {
+    dispatch({ type: SET_SEARCH, payload: e.target.value });
+  };
+  const filterPosts = (e) => {
+    e.preventDefault();
+    dispatch({ type: FILTER_POSTS, payload: search });
+  };
 
-  const fetchPosts = async () => {
-    dispatch({ type: LOADING_TRUE });
-    dispatch({ type: ERROR_FALSE });
+  const fetchPosts = async (subreddit) => {
     try {
-      const url = `https://www.reddit.com/r/${search}.json`;
+      const url =
+        subreddit === "all"
+          ? `https://www.reddit.com/r/all.json`
+          : `https://www.reddit.com/r/${subreddit}.json`;
       const res = await axios.get(url);
       const reddits = res.data.data.children;
+
       dispatch({
         type: "SET_POSTS",
         payload: reddits,
@@ -32,13 +40,12 @@ const Header = ({ search, dispatch }) => {
       dispatch({ type: LOADING_FALSE });
     }
   };
-  useEffect(() => {
-    fetchPosts();
-  }, [search]);
 
-  const searchReddit = () => {
-    dispatch({ type: SET_SEARCH, payload: searchRef.current.value });
-  };
+  useEffect(() => {
+    if (search === "") {
+      fetchPosts("all");
+    }
+  }, [search]);
   return (
     <header>
       <div className="logo">
@@ -47,17 +54,20 @@ const Header = ({ search, dispatch }) => {
           Reddit<span>Minimal</span>
         </p>
       </div>
-      <form className="search" onSubmit={(e) => e.preventDefault()}>
+      <form className="search" onSubmit={filterPosts}>
         <input
           name="name"
           id="name"
           type="text"
           placeholder="Search"
           aria-label="search posts"
-          ref={searchRef}
-          onChange={searchReddit}
+          value={search}
+          onChange={handleSearch}
           autoComplete="off"
         />
+        <button type="submit">
+          <FaSearch />
+        </button>
       </form>
     </header>
   );

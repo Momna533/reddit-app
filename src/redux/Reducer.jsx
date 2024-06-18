@@ -32,6 +32,7 @@ const Reducer = (state = initialState, action) => {
     return {
       ...state,
       posts: action.payload,
+      loading: false,
     };
   } else if (action.type === SET_SUBREDDITS) {
     return {
@@ -46,10 +47,9 @@ const Reducer = (state = initialState, action) => {
   } else if (action.type === SET_SELECTED_SUBREDDIT) {
     return { ...state, selectedSubreddit: action.payload };
   } else if (action.type === FILTER_POSTS) {
-    const filteredPosts = state.posts.filter((post) =>
-      post.data.subreddit.includes(state.search)
-    );
-
+    const filteredPosts = state.posts.filter((post) => {
+      return post.data.title.toLowerCase().includes(action.payload);
+    });
     return {
       ...state,
       posts: filteredPosts,

@@ -69,15 +69,18 @@ const PostItem = ({ author, created_utc, ups, title, num_comments, url }) => {
 };
 
 const PostsList = ({ posts, loading }) => {
-  if (loading) {
-    return <Preloader />;
-  }
   return (
     <div className="posts__list">
-      {posts.map((post) => {
-        const data = post.data;
-        return <PostItem {...data} key={data.id} />;
-      })}
+      {loading ? (
+        <Preloader />
+      ) : posts.length < 1 ? (
+        <h1>No post matched your search</h1>
+      ) : (
+        posts.map((post) => {
+          const data = post.data;
+          return <PostItem {...data} key={data.id} />;
+        })
+      )}
     </div>
   );
 };

@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import Preloader from "./LoadingSkeleton";
 
 const SubredditsList = ({
-  loading,
   subreddits,
   selectedSubreddit,
   handleRedditsFilter,
